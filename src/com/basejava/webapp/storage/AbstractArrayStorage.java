@@ -11,7 +11,7 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10_000;
 
@@ -19,17 +19,18 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected int size = 0;
 
-    protected abstract int getIndex(String uuid);
 
     protected abstract void addResumeToStorage(Resume resume, int index);
 
     protected abstract void remove(int index);
 
-    public void clear() {
+    @Override
+    protected void clearStorage() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
-        System.out.println("Все резюме удалены.");
     }
+
+
 
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
@@ -56,7 +57,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    public Resume  get(String uuid) {
+    public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
             throw new NotExistStorageException(uuid);
