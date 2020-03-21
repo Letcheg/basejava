@@ -14,17 +14,20 @@ public class SortedArrayStorage extends com.basejava.webapp.storage.AbstractArra
 
     @Override
     protected void addResumeToStorage(Resume resume, int index) {
+        checkSizeForArrayStorage(resume.getUuid());
         index = -index - 1;//позиция, в которой должен находиться ненайденный результат binarySearch. Бинарный поиск(метод getIndex), если не найдено искомое, возвращает отрицательное число = позиция (с 1) искомого в упорядоченном массиве
         if (index < size & size != 0) {//сохранение упорядоченности массива при записи нового элемента
             System.arraycopy(storage, index, storage, index + 1, size - index);
         }
         storage[index] = resume;
+        size++;
     }
 
     @Override
     public void remove(int index) {
-        System.arraycopy(storage, index+1, storage, index, size - 1 - index);
-
+        System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
+        storage[size - 1] = null;
+        size--;
     }
 }
 

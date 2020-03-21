@@ -39,7 +39,7 @@ public class MainCollections {
         System.out.println("Get dummy: " + collection.get("dummy"));
 
         printAll();
-        collection.delete(RESUME_1.getUuid());
+        collection.delete(UUID_1);
         printAll();
         collection.clear();
         printAll();

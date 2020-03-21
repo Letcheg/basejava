@@ -20,12 +20,16 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void addResumeToStorage(Resume resume, int index) {
+        checkSizeForArrayStorage(resume.getUuid());
         storage[size] = resume;
+        size++;
     }
 
     @Override
     public void remove(int index) {
         storage[index] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
 
     }
 }
