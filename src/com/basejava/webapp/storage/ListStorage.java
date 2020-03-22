@@ -1,18 +1,16 @@
 package com.basejava.webapp.storage;
 
-import com.basejava.webapp.exception.ExistStorageException;
-import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
 
-    protected static ArrayList<Resume> storage = new ArrayList<Resume>();
-
+    protected static List<Resume> storage = new ArrayList<>();
 
     @Override
-    public void clearStorage() {
+    protected void clearStorage() {
         storage.clear();
     }
 
@@ -26,8 +24,8 @@ public class ListStorage extends AbstractStorage {
         return -1;
     }
 
-
-    public void updateResume(int index, Resume resume) {
+    @Override
+    protected void updateResumeInStorage(int index, Resume resume) {
         storage.set(index, resume);
     }
 
@@ -37,23 +35,22 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume gettingResumeFromStorage(int index) {
+    protected Resume getResumeFromStorage(int index) {
         return storage.get(index);
     }
 
     @Override
-    protected void remove(int index) {
+    protected void removeResumeFromStorage(int index) {
         storage.remove(index);
     }
 
-
     @Override
-    public Resume[] getAll() {
+    protected Resume[] getAllResumeFromStorage() {
         return storage.toArray(new Resume[storage.size()]);
     }
 
     @Override
-    public int size() {
+    protected int sizeOfStorage() {
         return storage.size();
     }
 }

@@ -8,16 +8,19 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void clearStorage();
 
-    protected abstract int getIndex(String uuid);
-
-    protected abstract void updateResume(int index, Resume resume);
+    protected abstract void updateResumeInStorage(int index, Resume resume);
 
     protected abstract void addResumeToStorage(Resume resume, int index);
 
-    protected abstract Resume gettingResumeFromStorage(int index);
+    protected abstract Resume getResumeFromStorage(int index);
 
-    protected abstract void remove(int index);
+    protected abstract void removeResumeFromStorage(int index);
 
+    protected abstract Resume[] getAllResumeFromStorage();
+
+    protected abstract int sizeOfStorage();
+
+    protected abstract int getIndex(String uuid);
 
     public void clear() {
         clearStorage();
@@ -25,13 +28,11 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            updateResume(index, resume);
-            System.out.println("Резюме " + resume + " обновлено.");
-        }
+        String uuid = resume.getUuid();
+        int index = getIndex(uuid);
+        checkNotExist(index, uuid);
+        updateResumeInStorage(index, resume);
+        System.out.println("Резюме " + resume + " обновлено.");
     }
 
     public void save(Resume resume) {
@@ -45,22 +46,30 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    @Override
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else
-            return gettingResumeFromStorage(index);
+        checkNotExist(index, uuid);
+        return getResumeFromStorage(index);
     }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
+        checkNotExist(index, uuid);
+        removeResumeFromStorage(index);
+        System.out.println("Выполнено: Резюме " + uuid + " удалено. ");
+    }
+
+    public Resume[] getAll() {
+        return getAllResumeFromStorage();
+    }
+
+    public int size() {
+        return sizeOfStorage();
+    }
+
+    private void checkNotExist(int index, String uuid) {
         if (index < 0) {
             throw new NotExistStorageException(uuid);
-        } else {
-            remove(index);
-            System.out.println("Выполнено: Резюме " + uuid + " удалено. ");
         }
     }
 }
