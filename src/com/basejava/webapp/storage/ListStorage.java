@@ -25,12 +25,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResumeInStorage(int index, Resume resume) {
+    protected void updateResumeInStorage(int index, Resume resume, String uuid) {
         storage.set(index, resume);
     }
 
     @Override
-    protected void addResumeToStorage(Resume resume, int index) {
+    protected void addResumeToStorage(Resume resume, int index, String uuid) {
         storage.add(resume);
     }
 
@@ -45,12 +45,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume[] getAllResumeFromStorage() {
+    public Resume[] getAll() {
         return storage.toArray(new Resume[storage.size()]);
     }
 
     @Override
-    protected int sizeOfStorage() {
+    public int size() {
         return storage.size();
     }
 }

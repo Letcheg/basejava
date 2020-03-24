@@ -8,17 +8,13 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void clearStorage();
 
-    protected abstract void updateResumeInStorage(int index, Resume resume);
+    protected abstract void updateResumeInStorage(int index, Resume resume, String uuid);
 
-    protected abstract void addResumeToStorage(Resume resume, int index);
+    protected abstract void addResumeToStorage(Resume resume, int index, String uuid);
 
     protected abstract Resume getResumeFromStorage(int index);
 
     protected abstract void removeResumeFromStorage(int index);
-
-    protected abstract Resume[] getAllResumeFromStorage();
-
-    protected abstract int sizeOfStorage();
 
     protected abstract int getIndex(String uuid);
 
@@ -31,7 +27,7 @@ public abstract class AbstractStorage implements Storage {
         String uuid = resume.getUuid();
         int index = getIndex(uuid);
         checkNotExist(index, uuid);
-        updateResumeInStorage(index, resume);
+        updateResumeInStorage(index, resume, uuid);
         System.out.println("Резюме " + resume + " обновлено.");
     }
 
@@ -41,7 +37,7 @@ public abstract class AbstractStorage implements Storage {
         if (index >= 0) {
             throw new ExistStorageException(uuid);
         } else {
-            addResumeToStorage(resume, index);
+            addResumeToStorage(resume, index, uuid);
             System.out.println("Резюме " + uuid + " сохранено в хранилище. Общее количество резюме = " + this.size());
         }
     }
@@ -57,14 +53,6 @@ public abstract class AbstractStorage implements Storage {
         checkNotExist(index, uuid);
         removeResumeFromStorage(index);
         System.out.println("Выполнено: Резюме " + uuid + " удалено. ");
-    }
-
-    public Resume[] getAll() {
-        return getAllResumeFromStorage();
-    }
-
-    public int size() {
-        return sizeOfStorage();
     }
 
     private void checkNotExist(int index, String uuid) {
